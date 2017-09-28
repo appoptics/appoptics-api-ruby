@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Librato
+module Appoptics
   module Metrics
 
     describe Client do
@@ -36,7 +36,7 @@ module Librato
 
       describe "#api_endpoint" do
         it "defaults to metrics" do
-          expect(subject.api_endpoint).to eq('https://metrics-api.librato.com')
+          expect(subject.api_endpoint).to eq('https://api.appoptics.com')
         end
       end
 
@@ -54,8 +54,8 @@ module Librato
       describe "#authenticate" do
         context "when given two arguments" do
           it "stores them as email and api_key" do
-            subject.authenticate 'test@librato.com', 'api_key'
-            expect(subject.email).to eq('test@librato.com')
+            subject.authenticate 'test@Appoptics.com', 'api_key'
+            expect(subject.email).to eq('test@Appoptics.com')
             expect(subject.api_key).to eq('api_key')
           end
         end
@@ -64,7 +64,7 @@ module Librato
       describe "#connection" do
         it "raises exception without authentication" do
           subject.flush_authentication
-          expect { subject.connection }.to raise_error(Librato::Metrics::CredentialsMissing)
+          expect { subject.connection }.to raise_error(Appoptics::Metrics::CredentialsMissing)
         end
       end
 
@@ -106,14 +106,14 @@ module Librato
 
       describe "#submit" do
         it "persists metrics immediately" do
-          subject.authenticate 'me@librato.com', 'foo'
+          subject.authenticate 'me@Appoptics.com', 'foo'
           subject.persistence = :test
           expect(subject.submit(foo: 123)).to be true
           expect(subject.persister.persisted).to eq({gauges: [{name: 'foo', value: 123}]})
         end
 
         it "tolerates muliple metrics" do
-          subject.authenticate 'me@librato.com', 'foo'
+          subject.authenticate 'me@Appoptics.com', 'foo'
           subject.persistence = :test
           expect { subject.submit foo: 123, bar: 456 }.not_to raise_error
           expected = {gauges: [{name: 'foo', value: 123}, {name: 'bar', value: 456}]}

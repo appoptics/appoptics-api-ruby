@@ -1,6 +1,6 @@
 # Use for testing the interface with persistence methods
 
-module Librato
+module Appoptics
   module Metrics
     module Persistence
       class Test

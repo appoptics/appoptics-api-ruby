@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-module Librato
+module Appoptics
 
   describe Metrics do
 
    describe "#authorize" do
      context "when given two arguments" do
        it "stores them on simple" do
-         Metrics.authenticate 'tester@librato.com', 'api_key'
-         expect(Metrics.client.email).to eq('tester@librato.com')
+         Metrics.authenticate 'tester@AppOptics.com', 'api_key'
+         expect(Metrics.client.email).to eq('tester@AppOptics.com')
          expect(Metrics.client.api_key).to eq('api_key')
        end
      end
@@ -41,10 +41,10 @@ module Librato
 
    describe "#submit" do
      before(:all) do
-       Librato::Metrics.persistence = :test
-       Librato::Metrics.authenticate 'me@librato.com', 'foo'
+       Appoptics::Metrics.persistence = :test
+       Appoptics::Metrics.authenticate 'me@AppOptics.com', 'foo'
      end
-     after(:all) { Librato::Metrics.client.flush_authentication }
+     after(:all) { Appoptics::Metrics.client.flush_authentication }
 
      it "persists metrics immediately" do
        Metrics.persistence = :test
@@ -53,9 +53,9 @@ module Librato
      end
 
      it "tolerates multiple metrics" do
-       expect { Librato::Metrics.submit foo: 123, bar: 456 }.not_to raise_error
+       expect { Appoptics::Metrics.submit foo: 123, bar: 456 }.not_to raise_error
        expected = {gauges: [{name: 'foo', value: 123}, {name: 'bar', value: 456}]}
-       expect(Librato::Metrics.persister.persisted).to equal_unordered(expected)
+       expect(Appoptics::Metrics.persister.persisted).to equal_unordered(expected)
      end
    end
 

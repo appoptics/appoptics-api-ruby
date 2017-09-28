@@ -1,4 +1,4 @@
-module Librato
+module Appoptics
   module Metrics
 
     class Client
@@ -8,17 +8,14 @@ module Librato
 
       attr_accessor :email, :api_key, :proxy
 
-      # Provide agent identifier for the developer program. See:
-      # http://support.metrics.librato.com/knowledgebase/articles/53548-developer-program
-      #
       # @example Have the gem build your identifier string
-      #   Librato::Metrics.agent_identifier 'flintstone', '0.5', 'fred'
+      #   Appoptics::Metrics.agent_identifier 'flintstone', '0.5', 'fred'
       #
       # @example Provide your own identifier string
-      #   Librato::Metrics.agent_identifier 'flintstone/0.5 (dev_id:fred)'
+      #   Appoptics::Metrics.agent_identifier 'flintstone/0.5 (dev_id:fred)'
       #
       # @example Remove identifier string
-      #   Librato::Metrics.agent_identifier ''
+      #   Appoptics::Metrics.agent_identifier ''
       def agent_identifier(*args)
         if args.length == 1
           @agent_identifier = args.first
@@ -39,13 +36,12 @@ module Librato
       #
       # @return [String] api_endpoint
       def api_endpoint
-        @api_endpoint ||= 'https://metrics-api.librato.com'
+        @api_endpoint ||= 'https://api.appoptics.com'
       end
 
       # Set API endpoint for use with queries and direct
       # persistence. Generally you should not need to set this
-      # as it will default to the current Librato Metrics
-      # endpoint.
+      # as it will default to the current Appoptics endpoint.
       #
       def api_endpoint=(endpoint)
         @api_endpoint = endpoint
@@ -86,13 +82,13 @@ module Librato
       # careful with this, this is instant and permanent.
       #
       # @example Delete metric 'temperature'
-      #   Librato::Metrics.delete_metrics :temperature
+      #   Appoptics::Metrics.delete_metrics :temperature
       #
       # @example Delete metrics 'foo' and 'bar'
-      #   Librato::Metrics.delete_metrics :foo, :bar
+      #   Appoptics::Metrics.delete_metrics :foo, :bar
       #
       # @example Delete metrics that start with 'foo' except 'foobar'
-      #   Librato::Metrics.delete_metrics names: 'foo*', exclude: ['foobar']
+      #   Appoptics::Metrics.delete_metrics names: 'foo*', exclude: ['foobar']
       #
       def delete_metrics(*metric_names)
         raise(NoMetricsProvided, 'Metric name missing.') if metric_names.empty?
@@ -126,7 +122,7 @@ module Librato
       # optional.
       #
       # @example Get 5m moving average of 'foo'
-      #   measurements = Librato::Metrics.get_composite
+      #   measurements = Appoptics::Metrics.get_composite
       #     'moving_average(mean(series("foo", "*"), {size: "5"}))',
       #     start_time: Time.now.to_i - 60*60, resolution: 300
       #
@@ -148,14 +144,14 @@ module Librato
       # Retrieve a specific metric by name, optionally including data points
       #
       # @example Get attributes for a metric
-      #   metric = Librato::Metrics.get_metric :temperature
+      #   metric = Appoptics::Metrics.get_metric :temperature
       #
       # @example Get a metric and its 20 most recent data points
-      #   metric = Librato::Metrics.get_metric :temperature, count: 20
+      #   metric = Appoptics::Metrics.get_metric :temperature, count: 20
       #   metric['measurements'] # => {...}
       #
       # A full list of query parameters can be found in the API
-      # documentation: {http://dev.librato.com/v1/get/metrics/:name}
+      # documentation: {http://docs.appoptics.com/api/#retrieve-a-metric}
       #
       # @param [Symbol|String] name Metric name
       # @param [Hash] options Query options
@@ -181,15 +177,15 @@ module Librato
       # Retrieve series of measurements for a given metric
       #
       # @example Get series for metric
-      #   series = Librato::Metrics.get_series :requests, resolution: 1, duration: 3600
+      #   series = Appoptics::Metrics.get_series :requests, resolution: 1, duration: 3600
       #
       # @example Get series for metric grouped by tag
       #   query = { duration: 3600, resolution: 1, group_by: "environment", group_by_function: "sum" }
-      #   series = Librato::Metrics.get_series :requests, query
+      #   series = Appoptics::Metrics.get_series :requests, query
       #
       # @example Get series for metric grouped by tag and negated by tag filter
       #   query = { duration: 3600, resolution: 1, group_by: "environment", group_by_function: "sum", tags_search: "environment=!staging" }
-      #   series = Librato::Metrics.get_series :requests, query
+      #   series = Appoptics::Metrics.get_series :requests, query
       #
       # @param [Symbol|String] metric_name Metric name
       # @param [Hash] options Query options
@@ -215,26 +211,22 @@ module Librato
       # Retrieve data points for a specific metric
       #
       # @example Get 20 most recent data points for metric
-      #   data = Librato::Metrics.get_measurements :temperature, count: 20
-      #
-      # @example Get 20 most recent data points for a specific source
-      #   data = Librato::Metrics.get_measurements :temperature, count: 20,
-      #                                            source: 'app1'
+      #   data = Appoptics::Metrics.get_measurements :temperature, count: 20
       #
       # @example Get the 20 most recent 15 minute data point rollups
-      #   data = Librato::Metrics.get_measurements :temperature, count: 20,
+      #   data = Appoptics::Metrics.get_measurements :temperature, count: 20,
       #                                            resolution: 900
       #
       # @example Get data points for the last hour
-      #   data = Librato::Metrics.get_measurements start_time: Time.now-3600
+      #   data = Appoptics::Metrics.get_measurements start_time: Time.now-3600
       #
       # @example Get 15 min data points from two hours to an hour ago
-      #   data = Librato::Metrics.get_measurements start_time: Time.now-7200,
+      #   data = Appoptics::Metrics.get_measurements start_time: Time.now-7200,
       #                                            end_time: Time.now-3600,
       #                                            resolution: 900
       #
       # A full list of query parameters can be found in the API
-      # documentation: {http://dev.librato.com/v1/get/metrics/:name}
+      # documentation: {http://docs.appoptics.com/api/#retrieve-a-metric}
       #
       # @param [Symbol|String] metric_name Metric name
       # @param [Hash] options Query options
@@ -254,10 +246,10 @@ module Librato
       # List currently existing metrics
       #
       # @example List all metrics
-      #   Librato::Metrics.metrics
+      #   Appoptics::Metrics.metrics
       #
       # @example List metrics with 'foo' in the name
-      #   Librato::Metrics.metrics name: 'foo'
+      #   Appoptics::Metrics.metrics name: 'foo'
       #
       # @param [Hash] options
       def metrics(options={})
@@ -309,10 +301,10 @@ module Librato
       # Update a single metric with new attributes.
       #
       # @example Update metric 'temperature'
-      #   Librato::Metrics.update_metric :temperature, period: 15, attributes: { color: 'F00' }
+      #   Appoptics::Metrics.update_metric :temperature, period: 15, attributes: { color: 'F00' }
       #
       # @example Update metric 'humidity', creating it if it doesn't exist
-      #   Librato::Metrics.update_metric 'humidity', type: :gauge, period: 60, display_name: 'Humidity'
+      #   Appoptics::Metrics.update_metric 'humidity', type: :gauge, period: 60, display_name: 'Humidity'
       #
       def update_metric(metric, options = {})
         url = "metrics/#{metric}"
@@ -325,10 +317,10 @@ module Librato
       # Update multiple metrics.
       #
       # @example Update multiple metrics by name
-      #   Librato::Metrics.update_metrics names: ["foo", "bar"], period: 60
+      #   Appoptics::Metrics.update_metrics names: ["foo", "bar"], period: 60
       #
       # @example Update all metrics that start with 'foo' that aren't 'foobar'
-      #   Librato::Metrics.update_metrics names: 'foo*', exclude: ['foobar'], display_min: 0
+      #   Appoptics::Metrics.update_metrics names: 'foo*', exclude: ['foobar'], display_min: 0
       #
       def update_metrics(metrics)
         url = "metrics" # update multiple metrics
@@ -338,71 +330,10 @@ module Librato
         end
       end
 
-      # List sources, optionally limited by a name. See http://dev.librato.com/v1/sources
-      # and http://dev.librato.com/v1/get/sources
-      #
-      # @example Get sources matching "production"
-      #   Librato::Metrics.sources name: "production"
-      #
-      # @param [Hash] filter
-      def sources(filter = {})
-        query = {}
-        query[:name] = filter[:name] if filter.has_key?(:name)
-        path = "sources"
-        Collection.paginated_collection("sources", connection, path, query)
-      end
-
-      # Retrieve a single source by name. See http://dev.librato.com/v1/get/sources/:name
-      #
-      # @example Get the source for a particular EC2 instance from Cloudwatch
-      #   Librato::Metrics.get_source "us-east-1b.i-f1bc8c9c"
-      #
-      # @param String name
-      def get_source(name)
-        url = connection.build_url("sources/#{name}")
-        response = connection.get(url)
-        parsed = SmartJSON.read(response.body)
-      end
-
-      # Update a source by name. See http://dev.librato.com/v1/get/sources/:name
-      #
-      # @example Update the source display name for a particular EC2 instance from Cloudwatch
-      #   Librato::Metrics.update_source "us-east-1b.i-f1bc8c9c", display_name: "Production Web 1"
-      #
-      # @param String name
-      # @param Hash options
-      def update_source(name, options = {})
-        url = "sources/#{name}"
-        connection.put do |request|
-          request.url connection.build_url(url)
-          request.body = SmartJSON.write(options)
-        end
-      end
-
-      # Create a snapshot of an instrument
-      #
-      # @example Take a snapshot of the instrument at https://metrics-api.librato.com/v1/instruments/42 using a
-      #   duration of 3 hours and ending at now.
-      #   Librato::Metrics.snapshot(subject: {instrument: {href: "https://metrics-api.librato.com/v1/instruments/42"}},
-      #                             duration: 3.hours, end_time: Time.now)
-      #
-      # @param Hash options Params for the snapshot
-      # @options options [Hash] :subject An object representing the subject of the snapshot. For now, only instruments are supported
-      # @options options [Numeric] :duration Time interval over which to take the snapshot, defaults to 1 hour
-      # @options options [Numeric, Time] :end_time Snapshot the time period of the duration, ending with end_time. Default is "now".
-      def create_snapshot(options = {})
-        url = "snapshots"
-        response = connection.post do |request|
-          request.url connection.build_url(url)
-          request.body = SmartJSON.write(options)
-        end
-        parsed = SmartJSON.read(response.body)
-      end
-
       # Retrive a snapshot, to check its progress or find its image_href
       #
       # @example Get a snapshot identified by 42
-      #   Librato::Metrics.get_snapshot 42
+      #   Appoptics::Metrics.get_snapshot 42
       #
       # @param [Integer|String] id
       def get_snapshot(id)

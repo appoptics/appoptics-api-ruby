@@ -1,4 +1,4 @@
-module Librato
+module Appoptics
   module Metrics
 
     # An internal class used for extracting pagination logic

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-module Librato
+module Appoptics
   module Metrics
 
     describe SmartJSON do
@@ -10,12 +10,12 @@ module Librato
           before do
             $".delete_if {|s| s.include?("multi_json")}
             require "multi_json"
-            load "lib/librato/metrics/smart_json.rb"
+            load "lib/appoptics/metrics/smart_json.rb"
           end
 
           after do
             Object.send(:remove_const, :MultiJson)
-            load "lib/librato/metrics/smart_json.rb"
+            load "lib/appoptics/metrics/smart_json.rb"
           end
 
           it "uses .load or .decode" do
@@ -45,12 +45,12 @@ module Librato
           before do
             $".delete_if {|s| s.include?("multi_json")}
             require "multi_json"
-            load "lib/librato/metrics/smart_json.rb"
+            load "lib/appoptics/metrics/smart_json.rb"
           end
 
           after do
             Object.send(:remove_const, :MultiJson)
-            load "lib/librato/metrics/smart_json.rb"
+            load "lib/appoptics/metrics/smart_json.rb"
           end
 
           it "uses .dump or .decode" do

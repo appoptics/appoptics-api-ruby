@@ -4,13 +4,13 @@ require 'metrics/middleware/expects_status'
 require 'metrics/middleware/request_body'
 require 'metrics/middleware/retry'
 
-module Librato
+module Appoptics
   module Metrics
 
     class Connection
       extend Forwardable
 
-      DEFAULT_API_ENDPOINT = 'https://metrics-api.librato.com'
+      DEFAULT_API_ENDPOINT = 'https://api.appoptics.com'
 
       def_delegators :transport, :get, :post, :head, :put, :delete,
                                  :build_url
@@ -34,10 +34,10 @@ module Librato
           url: api_endpoint + "/v1/",
           request: {open_timeout: 20, timeout: 30}) do |f|
 
-          f.use Librato::Metrics::Middleware::RequestBody
-          f.use Librato::Metrics::Middleware::Retry
-          f.use Librato::Metrics::Middleware::CountRequests
-          f.use Librato::Metrics::Middleware::ExpectsStatus
+          f.use Appoptics::Metrics::Middleware::RequestBody
+          f.use Appoptics::Metrics::Middleware::Retry
+          f.use Appoptics::Metrics::Middleware::CountRequests
+          f.use Appoptics::Metrics::Middleware::ExpectsStatus
 
           f.adapter @adapter || Metrics.faraday_adapter
           f.proxy @proxy if @proxy
@@ -57,7 +57,7 @@ module Librato
         if agent_identifier && !agent_identifier.empty?
           ua_chunks << agent_identifier
         end
-        ua_chunks << "librato-metrics/#{Metrics::VERSION}"
+        ua_chunks << "appoptics-api-ruby/#{Metrics::VERSION}"
         ua_chunks << "(#{ruby_engine}; #{RUBY_VERSION}p#{RUBY_PATCHLEVEL}; #{RUBY_PLATFORM})"
         ua_chunks << "direct-faraday/#{Faraday::VERSION}"
         # TODO: include adapter information

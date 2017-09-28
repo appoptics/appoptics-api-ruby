@@ -1,6 +1,6 @@
 require "set"
 
-module Librato
+module Appoptics
   module Metrics
 
     # Mixin which provides common logic between {Queue} and {Aggregator}
@@ -16,13 +16,13 @@ module Librato
       end
 
       # The current Client instance this queue is using to authenticate
-      # and connect to Librato Metrics. This will default to the primary
-      # client used by the Librato::Metrics module unless it has been
+      # and connect to Appoptics. This will default to the primary
+      # client used by the Appoptics::Metrics module unless it has been
       # set to something else.
       #
-      # @return [Librato::Metrics::Client]
+      # @return [Appoptics::Metrics::Client]
       def client
-        @client ||= Librato::Metrics.client
+        @client ||= Appoptics::Metrics.client
       end
 
       def has_tags?
@@ -85,7 +85,7 @@ module Librato
 
       def create_persister
         type = self.client.persistence.to_s.capitalize
-        Librato::Metrics::Persistence.const_get(type).new
+        Appoptics::Metrics::Persistence.const_get(type).new
       end
 
       def epoch_time
@@ -95,7 +95,7 @@ module Librato
       def setup_common_options(options)
         validate_parameters(options)
         @autosubmit_interval = options[:autosubmit_interval]
-        @client = options[:client] || Librato::Metrics.client
+        @client = options[:client] || Appoptics::Metrics.client
         @per_request = options[:per_request] || MEASUREMENTS_PER_REQUEST
         @source = options[:source]
         @tags = options.fetch(:tags, {})

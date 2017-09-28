@@ -1,5 +1,5 @@
 
-module Librato
+module Appoptics
   module Metrics
 
     class MetricsError < StandardError; end

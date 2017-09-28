@@ -1,9 +1,9 @@
 # send a set of metrics every 60 seconds
 
-require 'librato/metrics'
+require 'appoptics-api-ruby'
 
-Librato::Metrics.authenticate 'my email', 'my api key'
-queue = Librato::Metrics::Queue.new
+Appoptics::Metrics.authenticate 'my email', 'my api key'
+queue = Appoptics::Metrics::Queue.new
 
 def sleep_until(time)
   secs = time - Time.now

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Librato
+module Appoptics
   describe Metrics do
     before(:all) { prep_integration_tests }
 
@@ -93,7 +93,7 @@ module Librato
           %w{foo foobaz}.each do |name|
             expect {
               Metrics.get_metric name
-            }.to raise_error(Librato::Metrics::NotFound)
+            }.to raise_error(Appoptics::Metrics::NotFound)
           end
 
           %w{foobar bar}.each do |name|
@@ -220,7 +220,7 @@ module Librato
         Metrics.submit foo: {type: :counter, value: 12}
         expect {
           Metrics.submit foo: 15 # submitting as gauge
-        }.to raise_error(Librato::Metrics::ClientError)
+        }.to raise_error(Appoptics::Metrics::ClientError)
         expect {
           Metrics.submit foo: {type: :counter, value: 17}
         }.not_to raise_error
@@ -273,7 +273,7 @@ module Librato
                                           attributes: {
                                             display_max: 1000
                                           }
-            }.to raise_error(Librato::Metrics::ClientError)
+            }.to raise_error(Appoptics::Metrics::ClientError)
           end
         end
 
@@ -348,7 +348,7 @@ module Librato
           source_name = "sources_api_test_#{Time.now.to_f}"
           expect {
             no_source = Metrics.get_source(source_name)
-          }.to raise_error(Librato::Metrics::NotFound)
+          }.to raise_error(Appoptics::Metrics::NotFound)
 
           Metrics.update_source(source_name, display_name: "New Source")
 
@@ -370,39 +370,6 @@ module Librato
         expect(series[0]["measurements"][0]["value"]).to eq(123)
       end
     end
-
-    # Note: These are challenging to test end-to-end, should probably
-    # unit test instead. Disabling for now.
-    #
-    # describe "Snapshots API" do
-    #
-    #   let(:instrument_id) do
-    #     instrument_options = {name: "Snapshot test subject"}
-    #     conn = Metrics.connection
-    #     resp = conn.post do |req|
-    #       req.url conn.build_url("/v1/instruments")
-    #       req.body = Librato::Metrics::SmartJSON.write(instrument_options)
-    #     end
-    #     instrument_id = Librato::Metrics::SmartJSON.read(resp.body)["id"]
-    #   end
-    #
-    #   let(:subject) do
-    #     {instrument: {href: "http://api.librato.dev/v1/instruments/#{instrument_id}"}}
-    #   end
-    #
-    #   it "should #create_snapshot" do
-    #     result = Metrics.create_snapshot(subject: subject)
-    #     result["href"].should =~ /snapshots\/\d+$/
-    #   end
-    #
-    #   it "should #get_snapshot" do
-    #     result = Metrics.create_snapshot(subject: subject)
-    #     snapshot_id = result["href"][/(\d+)$/]
-    #
-    #     result = Metrics.get_snapshot(snapshot_id)
-    #     result["href"].should =~ /snapshots\/\d+$/
-    #   end
-    # end
 
   end
 end

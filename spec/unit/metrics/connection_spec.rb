@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Librato
+module Appoptics
   module Metrics
 
     describe Connection do
@@ -8,7 +8,7 @@ module Librato
       describe "#api_endpoint" do
         context "when not provided" do
           it "uses default" do
-            expect(subject.api_endpoint).to eq('https://metrics-api.librato.com')
+            expect(subject.api_endpoint).to eq('https://api.appoptics.com')
           end
         end
 
@@ -24,7 +24,7 @@ module Librato
         context "without an agent_identifier" do
           it "renders standard string" do
             connection = Connection.new(client: Client.new)
-            expect(connection.user_agent).to start_with('librato-metrics')
+            expect(connection.user_agent).to start_with('appoptics-api-ruby')
           end
         end
 

@@ -1,4 +1,4 @@
-module Librato
+module Appoptics
   module Metrics
 
     class Util

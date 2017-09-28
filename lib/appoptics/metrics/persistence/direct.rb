@@ -1,7 +1,7 @@
 
-# Manages direct persistence with the Librato Metrics web API
+# Manages direct persistence with the Appoptics API
 
-module Librato
+module Appoptics
   module Metrics
     module Persistence
       class Direct
@@ -56,7 +56,7 @@ module Librato
         end
 
         def top_level_keys
-          [Librato::Metrics::PLURAL_TYPES, :measurements].flatten
+          [Appoptics::Metrics::PLURAL_TYPES, :measurements].flatten
         end
 
         def fetch_globals(queued)

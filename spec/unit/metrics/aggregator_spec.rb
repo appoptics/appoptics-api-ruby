@@ -1,5 +1,5 @@
 require "spec_helper.rb"
-module Librato
+module Appoptics
   module Metrics
 
     describe Aggregator do
@@ -19,9 +19,9 @@ module Librato
         end
 
         context "without specified client" do
-          it "uses Librato::Metrics client" do
+          it "uses Appoptics::Metrics client" do
             a = Aggregator.new
-            expect(a.client).to eq(Librato::Metrics.client)
+            expect(a.client).to eq(Appoptics::Metrics.client)
           end
         end
 
@@ -342,8 +342,8 @@ module Librato
 
       describe "#submit" do
         before(:all) do
-          Librato::Metrics.authenticate 'me@librato.com', 'foo'
-          Librato::Metrics.persistence = :test
+          Appoptics::Metrics.authenticate 'me@AppOptics.com', 'foo'
+          Appoptics::Metrics.persistence = :test
         end
 
         context "when successful" do

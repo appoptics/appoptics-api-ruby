@@ -10,7 +10,7 @@ Bundler::GemHelper.install_tasks
 
 # Gem signing
 task 'before_build' do
-  signing_key = File.expand_path("~/.gem/librato-private_key.pem")
+  signing_key = File.expand_path("~/.gem/appoptics-private_key.pem")
   if signing_key
     puts "Key found: signing gem..."
     ENV['GEM_SIGNING_KEY'] = signing_key
@@ -56,8 +56,8 @@ YARD::Rake::YardocTask.new
 desc "Open an irb session preloaded with this library"
 task :console do
   if !`which pry`.empty?
-    sh "pry -r ./lib/librato/metrics.rb"
+    sh "pry -r ./lib/appoptics/metrics.rb"
   else
-    sh "irb -rubygems -r ./lib/librato/metrics.rb"
+    sh "irb -rubygems -r ./lib/appoptics/metrics.rb"
   end
 end

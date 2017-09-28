@@ -1,6 +1,6 @@
 require "spec_helper"
 
-module Librato
+module Appoptics
   module Metrics
 
     describe Queue do
