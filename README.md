@@ -3,14 +3,6 @@ AppOptics API Ruby
 
 Ruby bindings for the AppOptics API
 
----
-
-## Important note on breaking change
-
-**NOTE:** Starting with version 2.1.0 appoptics-metrics requires a appoptics account that [supports tagged metrics](https://www.appoptics.com/docs/kb/faq/account_questions/tags_or_sources/). If your appoptics account doesn't yet support tagged metrics please use the [1.6.1 version](https://rubygems.org/gems/appoptics-metrics/versions/1.6.1).
-
----
-
 This gem provides granular control for scripting interactions with the Metrics core API. It is well suited for integrations, scripts, workers & background jobs.
 
 ## Installation
@@ -48,7 +40,7 @@ While this is all you need to get started, if you are sending a number of metric
 
 ## Authentication
 
-Make sure you have [an account for Metrics](https://metrics.appoptics.com/) and then authenticate with your email and API key (on your account page):
+Make sure you have [an account for Metrics](https://www.appoptics.com/) and then authenticate with your email and API key (on your account page):
 
     Appoptics::Metrics.authenticate 'email', 'api_key'
 
