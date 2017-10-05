@@ -6,7 +6,7 @@ module Appoptics
 
       def_delegator :annotator, :add, :annotate
 
-      attr_accessor :email, :api_key, :proxy
+      attr_accessor :api_key, :proxy
 
       # @example Have the gem build your identifier string
       #   Appoptics::Metrics.agent_identifier 'flintstone', '0.5', 'fred'
@@ -36,7 +36,7 @@ module Appoptics
       #
       # @return [String] api_endpoint
       def api_endpoint
-        @api_endpoint ||= 'https://api.appoptics.com'
+        @api_endpoint ||= 'https://metrics-api.librato.com'
       end
 
       # Set API endpoint for use with queries and direct
@@ -51,16 +51,16 @@ module Appoptics
       #
       # @param [String] email
       # @param [String] api_key
-      def authenticate(email, api_key)
+      def authenticate(api_key)
         flush_authentication
-        self.email, self.api_key = email, api_key
+        self.api_key = api_key
       end
 
       # Current connection object
       #
       def connection
         # prevent successful creation if no credentials set
-        raise CredentialsMissing unless (self.email and self.api_key)
+        raise CredentialsMissing unless (self.api_key)
         @connection ||= Connection.new(client: self, api_endpoint: api_endpoint,
                                        adapter: faraday_adapter, proxy: self.proxy)
       end
@@ -238,7 +238,6 @@ module Appoptics
       # Purge current credentials and connection.
       #
       def flush_authentication
-        self.email = nil
         self.api_key = nil
         @connection = nil
       end

@@ -15,9 +15,9 @@ platforms :rbx do
   gem 'rubinius-developer_tools'
 end
 
-gemspec
-
 gem 'rake'
+gem 'aggregate'
+gem 'faraday'
 
 # docs
 gem 'yard'
