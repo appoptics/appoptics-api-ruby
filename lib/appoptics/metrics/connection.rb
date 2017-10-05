@@ -44,7 +44,7 @@ module Appoptics
         end.tap do |transport|
           transport.headers[:user_agent] = user_agent
           transport.headers[:content_type] = 'application/json'
-          transport.token_auth @client.api_key
+          transport.basic_auth @client.api_key, nil
         end
       end
 
