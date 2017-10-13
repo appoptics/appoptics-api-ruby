@@ -36,7 +36,7 @@ module Appoptics
       #
       # @return [String] api_endpoint
       def api_endpoint
-        @api_endpoint ||= 'https://metrics-api.librato.com'
+        @api_endpoint ||= 'https://api.appoptics.com'
       end
 
       # Set API endpoint for use with queries and direct
