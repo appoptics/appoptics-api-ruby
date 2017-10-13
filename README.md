@@ -13,7 +13,7 @@ In your shell:
 
 Then, in your application or script:
 
-    require 'appoptics-api-ruby'
+    require 'appoptics/metrics'
 
 ### Optional steps
 

@@ -7,8 +7,7 @@ module Appoptics
    describe "#authorize" do
      context "when given two arguments" do
        it "stores them on simple" do
-         Metrics.authenticate 'tester@AppOptics.com', 'api_key'
-         expect(Metrics.client.email).to eq('tester@AppOptics.com')
+         Metrics.authenticate 'api_key'
          expect(Metrics.client.api_key).to eq('api_key')
        end
      end
