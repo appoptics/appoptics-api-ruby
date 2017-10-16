@@ -5,10 +5,10 @@ require 'appoptics/metrics/version'
 
 Gem::Specification.new do |s|
   s.name        = 'appoptics-api-ruby'
-  s.version     = '2.1.2'
+  s.version     = '2.1.3'
   s.date        = '2017-10-13'
   s.summary     = "Ruby bindings for the AppOptics API"
-  s.description = "n easy to use ruby wrapper for the AppOptics API"
+  s.description = "An easy to use ruby wrapper for the AppOptics API"
   s.authors     = ["Greg McKeever", "Matt Sanders"]
   s.email       = 'greg@solarwinds.cloud'
   s.files       = ["lib/appoptics/metrics.rb"]

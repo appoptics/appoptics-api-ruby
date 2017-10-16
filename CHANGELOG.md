@@ -1,5 +1,8 @@
 ## Changelog
 
+### Version 2.1.3
+* Update to support the AppOptics API
+
 ### Version 2.1.2
 * Add `Faraday` 0.8.x support to `ExpectsStatus` (#138, George Ogata)
 
