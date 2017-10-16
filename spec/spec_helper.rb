@@ -18,8 +18,8 @@ RSpec.configure do |config|
 
   # purge all metrics from test account
   def delete_all_metrics
-    connection = Appoptics::Metrics.client.connection
-    Appoptics::Metrics.metrics.each do |metric|
+    connection = AppOptics::Metrics.client.connection
+    AppOptics::Metrics.metrics.each do |metric|
       #puts "deleting #{metric['name']}..."
       # expects 204
       connection.delete("metrics/#{metric['name']}")
@@ -28,7 +28,7 @@ RSpec.configure do |config|
 
   # purge all annotations from test account
   def delete_all_annotations
-    annotator = Appoptics::Metrics::Annotator.new
+    annotator = AppOptics::Metrics::Annotator.new
     streams = annotator.list
     if streams['annotations']
       names = streams['annotations'].map{|s| s['name']}
@@ -41,9 +41,9 @@ RSpec.configure do |config|
     raise 'no TEST_API_USER specified in environment' unless ENV['TEST_API_USER']
     raise 'no TEST_API_KEY specified in environment' unless ENV['TEST_API_KEY']
     if ENV['TEST_API_ENDPOINT']
-      Appoptics::Metrics.api_endpoint = ENV['TEST_API_ENDPOINT']
+      AppOptics::Metrics.api_endpoint = ENV['TEST_API_ENDPOINT']
     end
-    Appoptics::Metrics.authenticate ENV['TEST_API_USER'], ENV['TEST_API_KEY']
+    AppOptics::Metrics.authenticate ENV['TEST_API_USER'], ENV['TEST_API_KEY']
   end
 
   def rackup_path(*parts)

@@ -1,7 +1,7 @@
 
 # Manages direct persistence with the Appoptics API
 
-module Appoptics
+module AppOptics
   module Metrics
     module Persistence
       class Direct
@@ -56,7 +56,7 @@ module Appoptics
         end
 
         def top_level_keys
-          [Appoptics::Metrics::PLURAL_TYPES, :measurements].flatten
+          [AppOptics::Metrics::PLURAL_TYPES, :measurements].flatten
         end
 
         def fetch_globals(queued)

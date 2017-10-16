@@ -1,6 +1,6 @@
 require "spec_helper"
 
-module Appoptics
+module AppOptics
   module Metrics
 
     describe Queue do
@@ -26,9 +26,9 @@ module Appoptics
         end
 
         context "without specified client" do
-          it "uses Appoptics::Metrics client" do
+          it "uses AppOptics::Metrics client" do
             queue = Queue.new
-            expect(queue.client).to eq(Appoptics::Metrics.client)
+            expect(queue.client).to eq(AppOptics::Metrics.client)
           end
         end
 
@@ -303,7 +303,7 @@ module Appoptics
         end
 
         it "returns true when nothing merged" do
-          subject.merge!(Appoptics::Metrics::Aggregator.new)
+          subject.merge!(AppOptics::Metrics::Aggregator.new)
           expect(subject.empty?).to be true
         end
       end
@@ -321,7 +321,7 @@ module Appoptics
 
         context "when there are no metrics" do
           it "it does not persist and returns true" do
-            subject.merge!(Appoptics::Metrics::Aggregator.new)
+            subject.merge!(AppOptics::Metrics::Aggregator.new)
             subject.persister.return_value(false)
             expect(subject.submit).to be true
           end
@@ -330,8 +330,8 @@ module Appoptics
 
       describe "#last_submit_time" do
         before(:all) do
-          Appoptics::Metrics.authenticate 'me@Appoptics.com', 'foo'
-          Appoptics::Metrics.persistence = :test
+          AppOptics::Metrics.authenticate 'me@Appoptics.com', 'foo'
+          AppOptics::Metrics.persistence = :test
         end
 
         it "defaults to nil" do
@@ -537,8 +537,8 @@ module Appoptics
 
       describe "#submit" do
         before(:all) do
-          Appoptics::Metrics.authenticate 'me@Appoptics.com', 'foo'
-          Appoptics::Metrics.persistence = :test
+          AppOptics::Metrics.authenticate 'me@Appoptics.com', 'foo'
+          AppOptics::Metrics.persistence = :test
         end
 
         context "when successful" do

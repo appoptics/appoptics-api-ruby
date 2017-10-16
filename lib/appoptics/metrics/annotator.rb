@@ -1,11 +1,11 @@
-module Appoptics::Metrics
+module AppOptics::Metrics
 
   # Read & write annotation streams for a given client connection.
   class Annotator
 
     # @option options [Client] :client Client instance used to connect to Metrics
     def initialize(options={})
-      @client = options[:client] || Appoptics::Metrics.client
+      @client = options[:client] || AppOptics::Metrics.client
     end
 
     # Creates a new annotation on the annotation stream

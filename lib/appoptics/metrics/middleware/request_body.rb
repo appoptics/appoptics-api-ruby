@@ -1,4 +1,4 @@
-module Appoptics
+module AppOptics
   module Metrics
     module Middleware
 

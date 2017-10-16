@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Appoptics
+module AppOptics
   describe Metrics do
     before(:all) { prep_integration_tests }
 
@@ -93,7 +93,7 @@ module Appoptics
           %w{foo foobaz}.each do |name|
             expect {
               Metrics.get_metric name
-            }.to raise_error(Appoptics::Metrics::NotFound)
+            }.to raise_error(AppOptics::Metrics::NotFound)
           end
 
           %w{foobar bar}.each do |name|
@@ -220,7 +220,7 @@ module Appoptics
         Metrics.submit foo: {type: :counter, value: 12}
         expect {
           Metrics.submit foo: 15 # submitting as gauge
-        }.to raise_error(Appoptics::Metrics::ClientError)
+        }.to raise_error(AppOptics::Metrics::ClientError)
         expect {
           Metrics.submit foo: {type: :counter, value: 17}
         }.not_to raise_error
@@ -273,7 +273,7 @@ module Appoptics
                                           attributes: {
                                             display_max: 1000
                                           }
-            }.to raise_error(Appoptics::Metrics::ClientError)
+            }.to raise_error(AppOptics::Metrics::ClientError)
           end
         end
 
@@ -348,7 +348,7 @@ module Appoptics
           source_name = "sources_api_test_#{Time.now.to_f}"
           expect {
             no_source = Metrics.get_source(source_name)
-          }.to raise_error(Appoptics::Metrics::NotFound)
+          }.to raise_error(AppOptics::Metrics::NotFound)
 
           Metrics.update_source(source_name, display_name: "New Source")
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Appoptics
+module AppOptics
   module Metrics
 
     describe Queue do
@@ -80,11 +80,11 @@ module Appoptics
           queue.add test_2: { value: 456, tags: { hostname: "metrics-web-stg-2" }}
           queue.submit
 
-          test_1 = Appoptics::Metrics.get_series :test_1, resolution: 1, duration: 3600
+          test_1 = AppOptics::Metrics.get_series :test_1, resolution: 1, duration: 3600
           expect(test_1[0]["tags"]["hostname"]).to eq("metrics-web-stg-1")
           expect(test_1[0]["measurements"][0]["value"]).to eq(123)
 
-          test_2 = Appoptics::Metrics.get_series :test_2, resolution: 1, duration: 3600
+          test_2 = AppOptics::Metrics.get_series :test_2, resolution: 1, duration: 3600
           expect(test_2[0]["tags"]["hostname"]).to eq("metrics-web-stg-2")
           expect(test_2[0]["measurements"][0]["value"]).to eq(456)
         end

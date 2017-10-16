@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Appoptics
+module AppOptics
   module Metrics
     module Middleware
 

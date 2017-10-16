@@ -16,7 +16,7 @@ require 'metrics/smart_json'
 require 'metrics/util'
 require 'metrics/version'
 
-module Appoptics
+module AppOptics
 
   # Metrics provides a simple wrapper for the Metrics web API with a
   # number of added conveniences for common use cases.
@@ -24,19 +24,19 @@ module Appoptics
   # See the {file:README.md README} for more information and examples.
   #
   # @example Simple use case
-  #   Appoptics::Metrics.authenticate 'email', 'api_key'
+  #   AppOptics::Metrics.authenticate 'email', 'api_key'
   #
   #   # list current metrics
-  #   Appoptics::Metrics.metrics
+  #   AppOptics::Metrics.metrics
   #
   #   # submit a metric immediately
-  #   Appoptics::Metrics.submit foo: 12712
+  #   AppOptics::Metrics.submit foo: 12712
   #
   #   # fetch the last 10 values of foo
-  #   Appoptics::Metrics.get_measurements :foo, count: 10
+  #   AppOptics::Metrics.get_measurements :foo, count: 10
   #
   # @example Queuing metrics for submission
-  #   queue = Appoptics::Metrics::Queue.new
+  #   queue = AppOptics::Metrics::Queue.new
   #
   #   # queue some metrics
   #   queue.add foo: 12312
@@ -46,7 +46,7 @@ module Appoptics
   #   queue.submit
   #
   # @example Using a Client object
-  #   client = Appoptics::Metrics::Client.new
+  #   client = AppOptics::Metrics::Client.new
   #   client.authenticate 'email', 'api_key'
   #
   #   # list client's metrics
@@ -60,7 +60,7 @@ module Appoptics
   #   queue.add bar: 45678
   #   queue.submit
   #
-  # @note Most of the methods you can call directly on Appoptics::Metrics are
+  # @note Most of the methods you can call directly on AppOptics::Metrics are
   #   delegated to {Client} and are documented there.
   module Metrics
     extend SingleForwardable
@@ -69,7 +69,7 @@ module Appoptics
     PLURAL_TYPES = TYPES.map { |type| "#{type}s".to_sym }
     MIN_MEASURE_TIME = (Time.now-(3600*24*365)).to_i
 
-    # Most of the singleton methods of Appoptics::Metrics are actually
+    # Most of the singleton methods of AppOptics::Metrics are actually
     # being called on a global Client instance. See further docs on
     # Client.
     #
@@ -83,12 +83,12 @@ module Appoptics
                     :sources, :submit, :update_metric, :update_metrics,
                     :update_source
 
-    # The Appoptics::Metrics::Client being used by module-level
+    # The AppOptics::Metrics::Client being used by module-level
     # access.
     #
     # @return [Client]
     def self.client
-      @client ||= Appoptics::Metrics::Client.new
+      @client ||= AppOptics::Metrics::Client.new
     end
 
   end

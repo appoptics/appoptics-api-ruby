@@ -1,6 +1,6 @@
 require "set"
 
-module Appoptics
+module AppOptics
   module Metrics
 
     # Mixin which provides common logic between {Queue} and {Aggregator}
@@ -17,12 +17,12 @@ module Appoptics
 
       # The current Client instance this queue is using to authenticate
       # and connect to Appoptics. This will default to the primary
-      # client used by the Appoptics::Metrics module unless it has been
+      # client used by the AppOptics::Metrics module unless it has been
       # set to something else.
       #
-      # @return [Appoptics::Metrics::Client]
+      # @return [AppOptics::Metrics::Client]
       def client
-        @client ||= Appoptics::Metrics.client
+        @client ||= AppOptics::Metrics.client
       end
 
       def has_tags?
@@ -85,7 +85,7 @@ module Appoptics
 
       def create_persister
         type = self.client.persistence.to_s.capitalize
-        Appoptics::Metrics::Persistence.const_get(type).new
+        AppOptics::Metrics::Persistence.const_get(type).new
       end
 
       def epoch_time
@@ -95,7 +95,7 @@ module Appoptics
       def setup_common_options(options)
         validate_parameters(options)
         @autosubmit_interval = options[:autosubmit_interval]
-        @client = options[:client] || Appoptics::Metrics.client
+        @client = options[:client] || AppOptics::Metrics.client
         @per_request = options[:per_request] || MEASUREMENTS_PER_REQUEST
         @source = options[:source]
         @tags = options.fetch(:tags, {})

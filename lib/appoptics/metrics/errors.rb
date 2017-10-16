@@ -1,5 +1,5 @@
 
-module Appoptics
+module AppOptics
   module Metrics
 
     class MetricsError < StandardError; end

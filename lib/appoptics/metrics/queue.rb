@@ -1,6 +1,6 @@
 require 'metrics/processor'
 
-module Appoptics
+module AppOptics
   module Metrics
     class Queue
       include Processor
@@ -10,7 +10,7 @@ module Appoptics
       # @option opts [Integer] :autosubmit_count If set the queue will auto-submit any time it hits this number of measurements.
       # @option opts [Integer] :autosubmit_interval If set the queue will auto-submit if the given number of seconds has passed when a new metric is added.
       # @option opts [Boolean] :clear_failures Should the queue remove any queued measurements from its queue if it runs into problems with a request? (default: false)
-      # @option opts [Client] :client The client object to use to connect to Metrics. (default: Appoptics::Metrics.client)
+      # @option opts [Client] :client The client object to use to connect to Metrics. (default: AppOptics::Metrics.client)
       # @option opts [Time|Integer] :measure_time A default measure_time to use for measurements added.
       # @option opts [String] :prefix If set will apply the given prefix to all metric names of measurements added.
       # @option opts [Boolean] :skip_measurement_times If true will not assign measurement_time to each measure as they are added.

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Appoptics
+module AppOptics
 
   describe Metrics do
 
@@ -40,10 +40,10 @@ module Appoptics
 
    describe "#submit" do
      before(:all) do
-       Appoptics::Metrics.persistence = :test
-       Appoptics::Metrics.authenticate 'me@AppOptics.com', 'foo'
+       AppOptics::Metrics.persistence = :test
+       AppOptics::Metrics.authenticate 'me@AppOptics.com', 'foo'
      end
-     after(:all) { Appoptics::Metrics.client.flush_authentication }
+     after(:all) { AppOptics::Metrics.client.flush_authentication }
 
      it "persists metrics immediately" do
        Metrics.persistence = :test
@@ -52,9 +52,9 @@ module Appoptics
      end
 
      it "tolerates multiple metrics" do
-       expect { Appoptics::Metrics.submit foo: 123, bar: 456 }.not_to raise_error
+       expect { AppOptics::Metrics.submit foo: 123, bar: 456 }.not_to raise_error
        expected = {gauges: [{name: 'foo', value: 123}, {name: 'bar', value: 456}]}
-       expect(Appoptics::Metrics.persister.persisted).to equal_unordered(expected)
+       expect(AppOptics::Metrics.persister.persisted).to equal_unordered(expected)
      end
    end
 

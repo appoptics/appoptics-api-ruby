@@ -29,8 +29,8 @@ If you are using jruby, you need to ensure [jruby-openssl](https://github.com/jr
 
 If you are looking for the quickest possible route to getting a data into Metrics, you only need two lines:
 
-    Appoptics::Metrics.authenticate 'api_key'
-    Appoptics::Metrics.submit my_metric: { value: 42, tags: { host: 'localhost' } }
+    AppOptics::Metrics.authenticate 'api_key'
+    AppOptics::Metrics.submit my_metric: { value: 42, tags: { host: 'localhost' } }
 
 While this is all you need to get started, if you are sending a number of metrics regularly a queue may be easier/more performant so read on...
 
@@ -39,7 +39,7 @@ While this is all you need to get started, if you are sending a number of metric
 
 Make sure you have [an account for AppOptics](https://www.appoptics.com/) and then authenticate with your email and API key (on your account page):
 
-    Appoptics::Metrics.authenticate 'api_key'
+    AppOptics::Metrics.authenticate 'api_key'
 
 
 ## Sending Measurements
@@ -48,7 +48,7 @@ A measurement includes a metric name, value, and one or more tags. Tags include 
 
 Queue up a simple metric named `temperature`:
 
-    queue = Appoptics::Metrics::Queue.new
+    queue = AppOptics::Metrics::Queue.new
     queue.add temperature: {value: 77, tags: { city: 'oakland' }}
     queue.submit
 
@@ -56,7 +56,7 @@ Queue up a simple metric named `temperature`:
 
 You can initialize `Queue` and/or `Aggregator` with top-level tags that will be applied to every measurement:
 
-    queue = Appoptics::Metrics::Queue.new(tags: { service: 'auth', environment: 'prod', host: 'auth-prod-1' })
+    queue = AppOptics::Metrics::Queue.new(tags: { service: 'auth', environment: 'prod', host: 'auth-prod-1' })
     queue.add my_metric: 10
     queue.submit
 
@@ -74,11 +74,11 @@ For more information, visit the [API documentation](https://docs.appoptics.com/a
 
 Get name and properties for all metrics you have in the system:
 
-    metrics = Appoptics::Metrics.metrics
+    metrics = AppOptics::Metrics.metrics
 
 Get only metrics whose name includes `time`:
 
-    metrics = Appoptics::Metrics.metrics name: 'time'
+    metrics = AppOptics::Metrics.metrics name: 'time'
 
 
 ## Retrieving Measurements
@@ -93,7 +93,7 @@ query = {
   group_by_function: "sum",
   tags_search: "environment=prod*"
 }
-Appoptics::Metrics.get_series :exceptions, query
+AppOptics::Metrics.get_series :exceptions, query
 ```
 
 For more information, visit the [API documentation](https://docs.appoptics.com/api/#retrieve-a-measurement).
@@ -105,7 +105,7 @@ If you are measuring something very frequently e.g. per-request in a web applica
 
 Aggregate a simple gauge metric named `response_latency`:
 
-    aggregator = Appoptics::Metrics::Aggregator.new
+    aggregator = AppOptics::Metrics::Aggregator.new
     aggregator.add response_latency: 85.0
     aggregator.add response_latency: 100.5
     aggregator.add response_latency: 150.2
@@ -118,7 +118,7 @@ Which would result in a gauge measurement like:
 
 You can specify a source during aggregate construction:
 
-    aggregator = Appoptics::Metrics::Aggregator.new(tags: { service: 'auth', environment: 'prod', host: 'auth-prod-1' })
+    aggregator = AppOptics::Metrics::Aggregator.new(tags: { service: 'auth', environment: 'prod', host: 'auth-prod-1' })
 
 You can aggregate multiple metrics at once:
 
@@ -150,23 +150,23 @@ Annotation streams are a great way to track events like deploys, backups or anyt
 
 At a minimum each annotation needs to be assigned to a stream and to have a title. Let's add an annotation for deploying `v45` of our app to the `deployments` stream:
 
-    Appoptics::Metrics.annotate :deployments, 'deployed v45'
+    AppOptics::Metrics.annotate :deployments, 'deployed v45'
 
 There are a number of optional fields which can make annotations even more powerful:
 
-    Appoptics::Metrics.annotate :deployments, 'deployed v46', source: 'frontend',
+    AppOptics::Metrics.annotate :deployments, 'deployed v46', source: 'frontend',
         start_time: 1354662596, end_time: 1354662608,
         description: 'Deployed 6f3bc6e67682: fix lotsa bugs…'
 
 You can also automatically annotate the start and end time of an action by using `annotate`'s block form:
 
-    Appoptics::Metrics.annotate :deployments, 'deployed v46' do
+    AppOptics::Metrics.annotate :deployments, 'deployed v46' do
       # do work..
     end
 
 More fine-grained control of annotations is available via the `Annotator` object:
 
-    annotator = Appoptics::Metrics::Annotator.new
+    annotator = AppOptics::Metrics::Annotator.new
 
     # list annotation streams
     streams = annotator.list
@@ -184,15 +184,15 @@ See the documentation of `Annotator` for more details and examples of use.
 Both `Queue` and `Aggregator` support automatically submitting measurements on a given time interval:
 
 	# submit once per minute
-	timed_queue = Appoptics::Metrics::Queue.new(autosubmit_interval: 60)
+	timed_queue = AppOptics::Metrics::Queue.new(autosubmit_interval: 60)
 
 	# submit every 5 minutes
-	timed_aggregator = Appoptics::Metrics::Aggregator.new(autosubmit_interval: 300)
+	timed_aggregator = AppOptics::Metrics::Aggregator.new(autosubmit_interval: 300)
 
 `Queue` also supports auto-submission based on measurement volume:
 
 	# submit when the 400th measurement is queued
-	volume_queue = Appoptics::Metrics::Queue.new(autosubmit_count: 400)
+	volume_queue = AppOptics::Metrics::Queue.new(autosubmit_count: 400)
 
 These options can also be combined for more flexible behavior.
 
@@ -205,19 +205,19 @@ If your goal is to collect metrics every _x_ seconds and submit them, [check out
 Setting custom [properties](https://docs.appoptics.com/api/#metric-attributes) on your metrics is easy:
 
     # assign a period and default color
-    Appoptics::Metrics.update_metric :temperature, period: 15, attributes: { color: 'F00' }
+    AppOptics::Metrics.update_metric :temperature, period: 15, attributes: { color: 'F00' }
 
 ## Deleting Metrics
 
 If you ever need to remove a metric and all of its measurements, doing so is easy:
 
 	# delete the metrics 'temperature' and 'humidity'
-	Appoptics::Metrics.delete_metrics :temperature, :humidity
+	AppOptics::Metrics.delete_metrics :temperature, :humidity
 
 You can also delete using wildcards:
 
     # delete metrics that start with cpu. except for cpu.free
-    Appoptics::Metrics.delete_metrics names: 'cpu.*', exclude: ['cpu.free']
+    AppOptics::Metrics.delete_metrics names: 'cpu.*', exclude: ['cpu.free']
 
 Note that deleted metrics and their measurements are unrecoverable, so use with care.
 
@@ -225,13 +225,13 @@ Note that deleted metrics and their measurements are unrecoverable, so use with 
 
 If you need to use metrics with multiple sets of authentication credentials simultaneously, you can do it with `Client`:
 
-    joe = Appoptics::Metrics::Client.new
+    joe = AppOptics::Metrics::Client.new
     joe.authenticate 'api_key1'
 
-    mike = Appoptics::Metrics::Client.new
+    mike = AppOptics::Metrics::Client.new
     mike.authenticate 'api_key2'
 
-All of the same operations you can call directly from `Appoptics::Metrics` are available per-client:
+All of the same operations you can call directly from `AppOptics::Metrics` are available per-client:
 
 	# list Joe's metrics
 	joe.metrics
@@ -239,7 +239,7 @@ All of the same operations you can call directly from `Appoptics::Metrics` are a
 There are two ways to associate a new queue with a client:
 
 	# these are functionally equivalent
-	joe_queue = Appoptics::Metrics::Queue.new(client: joe)
+	joe_queue = AppOptics::Metrics::Queue.new(client: joe)
 	joe_queue = joe.new_queue
 
 Once the queue is associated you can use it normally:

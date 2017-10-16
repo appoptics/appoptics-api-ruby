@@ -1,4 +1,4 @@
-module Appoptics
+module AppOptics
   module Metrics
     module Middleware
 
@@ -15,7 +15,7 @@ module Appoptics
           begin
             env[:body] = request_body # after failure is set to response body
             @app.call(env)
-          rescue Appoptics::Metrics::ServerError, Timeout::Error,
+          rescue AppOptics::Metrics::ServerError, Timeout::Error,
                  Faraday::Error::ConnectionFailed
             if retries > 0
               retries -= 1 and retry

@@ -1,4 +1,4 @@
-module Appoptics
+module AppOptics
   module Metrics
 
     class Client
@@ -9,13 +9,13 @@ module Appoptics
       attr_accessor :api_key, :proxy
 
       # @example Have the gem build your identifier string
-      #   Appoptics::Metrics.agent_identifier 'flintstone', '0.5', 'fred'
+      #   AppOptics::Metrics.agent_identifier 'flintstone', '0.5', 'fred'
       #
       # @example Provide your own identifier string
-      #   Appoptics::Metrics.agent_identifier 'flintstone/0.5 (dev_id:fred)'
+      #   AppOptics::Metrics.agent_identifier 'flintstone/0.5 (dev_id:fred)'
       #
       # @example Remove identifier string
-      #   Appoptics::Metrics.agent_identifier ''
+      #   AppOptics::Metrics.agent_identifier ''
       def agent_identifier(*args)
         if args.length == 1
           @agent_identifier = args.first
@@ -82,13 +82,13 @@ module Appoptics
       # careful with this, this is instant and permanent.
       #
       # @example Delete metric 'temperature'
-      #   Appoptics::Metrics.delete_metrics :temperature
+      #   AppOptics::Metrics.delete_metrics :temperature
       #
       # @example Delete metrics 'foo' and 'bar'
-      #   Appoptics::Metrics.delete_metrics :foo, :bar
+      #   AppOptics::Metrics.delete_metrics :foo, :bar
       #
       # @example Delete metrics that start with 'foo' except 'foobar'
-      #   Appoptics::Metrics.delete_metrics names: 'foo*', exclude: ['foobar']
+      #   AppOptics::Metrics.delete_metrics names: 'foo*', exclude: ['foobar']
       #
       def delete_metrics(*metric_names)
         raise(NoMetricsProvided, 'Metric name missing.') if metric_names.empty?
@@ -122,7 +122,7 @@ module Appoptics
       # optional.
       #
       # @example Get 5m moving average of 'foo'
-      #   measurements = Appoptics::Metrics.get_composite
+      #   measurements = AppOptics::Metrics.get_composite
       #     'moving_average(mean(series("foo", "*"), {size: "5"}))',
       #     start_time: Time.now.to_i - 60*60, resolution: 300
       #
@@ -144,10 +144,10 @@ module Appoptics
       # Retrieve a specific metric by name, optionally including data points
       #
       # @example Get attributes for a metric
-      #   metric = Appoptics::Metrics.get_metric :temperature
+      #   metric = AppOptics::Metrics.get_metric :temperature
       #
       # @example Get a metric and its 20 most recent data points
-      #   metric = Appoptics::Metrics.get_metric :temperature, count: 20
+      #   metric = AppOptics::Metrics.get_metric :temperature, count: 20
       #   metric['measurements'] # => {...}
       #
       # A full list of query parameters can be found in the API
@@ -177,15 +177,15 @@ module Appoptics
       # Retrieve series of measurements for a given metric
       #
       # @example Get series for metric
-      #   series = Appoptics::Metrics.get_series :requests, resolution: 1, duration: 3600
+      #   series = AppOptics::Metrics.get_series :requests, resolution: 1, duration: 3600
       #
       # @example Get series for metric grouped by tag
       #   query = { duration: 3600, resolution: 1, group_by: "environment", group_by_function: "sum" }
-      #   series = Appoptics::Metrics.get_series :requests, query
+      #   series = AppOptics::Metrics.get_series :requests, query
       #
       # @example Get series for metric grouped by tag and negated by tag filter
       #   query = { duration: 3600, resolution: 1, group_by: "environment", group_by_function: "sum", tags_search: "environment=!staging" }
-      #   series = Appoptics::Metrics.get_series :requests, query
+      #   series = AppOptics::Metrics.get_series :requests, query
       #
       # @param [Symbol|String] metric_name Metric name
       # @param [Hash] options Query options
@@ -211,17 +211,17 @@ module Appoptics
       # Retrieve data points for a specific metric
       #
       # @example Get 20 most recent data points for metric
-      #   data = Appoptics::Metrics.get_measurements :temperature, count: 20
+      #   data = AppOptics::Metrics.get_measurements :temperature, count: 20
       #
       # @example Get the 20 most recent 15 minute data point rollups
-      #   data = Appoptics::Metrics.get_measurements :temperature, count: 20,
+      #   data = AppOptics::Metrics.get_measurements :temperature, count: 20,
       #                                            resolution: 900
       #
       # @example Get data points for the last hour
-      #   data = Appoptics::Metrics.get_measurements start_time: Time.now-3600
+      #   data = AppOptics::Metrics.get_measurements start_time: Time.now-3600
       #
       # @example Get 15 min data points from two hours to an hour ago
-      #   data = Appoptics::Metrics.get_measurements start_time: Time.now-7200,
+      #   data = AppOptics::Metrics.get_measurements start_time: Time.now-7200,
       #                                            end_time: Time.now-3600,
       #                                            resolution: 900
       #
@@ -245,10 +245,10 @@ module Appoptics
       # List currently existing metrics
       #
       # @example List all metrics
-      #   Appoptics::Metrics.metrics
+      #   AppOptics::Metrics.metrics
       #
       # @example List metrics with 'foo' in the name
-      #   Appoptics::Metrics.metrics name: 'foo'
+      #   AppOptics::Metrics.metrics name: 'foo'
       #
       # @param [Hash] options
       def metrics(options={})
@@ -300,10 +300,10 @@ module Appoptics
       # Update a single metric with new attributes.
       #
       # @example Update metric 'temperature'
-      #   Appoptics::Metrics.update_metric :temperature, period: 15, attributes: { color: 'F00' }
+      #   AppOptics::Metrics.update_metric :temperature, period: 15, attributes: { color: 'F00' }
       #
       # @example Update metric 'humidity', creating it if it doesn't exist
-      #   Appoptics::Metrics.update_metric 'humidity', type: :gauge, period: 60, display_name: 'Humidity'
+      #   AppOptics::Metrics.update_metric 'humidity', type: :gauge, period: 60, display_name: 'Humidity'
       #
       def update_metric(metric, options = {})
         url = "metrics/#{metric}"
@@ -316,10 +316,10 @@ module Appoptics
       # Update multiple metrics.
       #
       # @example Update multiple metrics by name
-      #   Appoptics::Metrics.update_metrics names: ["foo", "bar"], period: 60
+      #   AppOptics::Metrics.update_metrics names: ["foo", "bar"], period: 60
       #
       # @example Update all metrics that start with 'foo' that aren't 'foobar'
-      #   Appoptics::Metrics.update_metrics names: 'foo*', exclude: ['foobar'], display_min: 0
+      #   AppOptics::Metrics.update_metrics names: 'foo*', exclude: ['foobar'], display_min: 0
       #
       def update_metrics(metrics)
         url = "metrics" # update multiple metrics
@@ -332,7 +332,7 @@ module Appoptics
       # Retrive a snapshot, to check its progress or find its image_href
       #
       # @example Get a snapshot identified by 42
-      #   Appoptics::Metrics.get_snapshot 42
+      #   AppOptics::Metrics.get_snapshot 42
       #
       # @param [Integer|String] id
       def get_snapshot(id)

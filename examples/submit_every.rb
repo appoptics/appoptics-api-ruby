@@ -2,8 +2,8 @@
 
 require 'appoptics-api-ruby'
 
-Appoptics::Metrics.authenticate 'my email', 'my api key'
-queue = Appoptics::Metrics::Queue.new
+AppOptics::Metrics.authenticate 'my email', 'my api key'
+queue = AppOptics::Metrics::Queue.new
 
 def sleep_until(time)
   secs = time - Time.now

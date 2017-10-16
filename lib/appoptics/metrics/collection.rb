@@ -1,4 +1,4 @@
-module Appoptics
+module AppOptics
   module Metrics
 
     # An internal class used for extracting pagination logic

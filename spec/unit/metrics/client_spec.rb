@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Appoptics
+module AppOptics
   module Metrics
 
     describe Client do
@@ -64,7 +64,7 @@ module Appoptics
       describe "#connection" do
         it "raises exception without authentication" do
           subject.flush_authentication
-          expect { subject.connection }.to raise_error(Appoptics::Metrics::CredentialsMissing)
+          expect { subject.connection }.to raise_error(AppOptics::Metrics::CredentialsMissing)
         end
       end
 

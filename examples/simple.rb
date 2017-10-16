@@ -1,20 +1,20 @@
 require 'appoptics-api-ruby'
 
-Appoptics::Metrics.authenticate 'my email', 'my api key'
+AppOptics::Metrics.authenticate 'my email', 'my api key'
 
 # send a measurement of 12 for 'foo'
-Appoptics::Metrics.submit cpu: 54
+AppOptics::Metrics.submit cpu: 54
 
 # submit multiple metrics at once
-Appoptics::Metrics.submit cpu: 63, memory: 213
+AppOptics::Metrics.submit cpu: 63, memory: 213
 
 # submit a metric with a custom source
-Appoptics::Metrics.submit cpu: {source: 'myapp', value: 75}
+AppOptics::Metrics.submit cpu: {source: 'myapp', value: 75}
 
 # if you are sending many metrics it is much more performant
 # to submit them in sets rather than individually:
 
-queue = Appoptics::Metrics::Queue.new
+queue = AppOptics::Metrics::Queue.new
 
 queue.add 'disk.free' => 1223121
 queue.add memory: 2321

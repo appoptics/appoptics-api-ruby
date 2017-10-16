@@ -1,5 +1,9 @@
 ## Changelog
 
+### Version 2.1.4
+* Updated namespace/constant formatting
+* Updated cert file
+
 ### Version 2.1.3
 * Update to support the AppOptics API
 

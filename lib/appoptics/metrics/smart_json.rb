@@ -1,4 +1,4 @@
-module Appoptics
+module AppOptics
   module Metrics
     class SmartJSON
       if defined?(::MultiJson)

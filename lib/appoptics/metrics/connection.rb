@@ -4,7 +4,7 @@ require 'metrics/middleware/expects_status'
 require 'metrics/middleware/request_body'
 require 'metrics/middleware/retry'
 
-module Appoptics
+module AppOptics
   module Metrics
 
     class Connection
@@ -34,10 +34,10 @@ module Appoptics
           url: api_endpoint + "/v1/",
           request: {open_timeout: 20, timeout: 30}) do |f|
 
-          f.use Appoptics::Metrics::Middleware::RequestBody
-          f.use Appoptics::Metrics::Middleware::Retry
-          f.use Appoptics::Metrics::Middleware::CountRequests
-          f.use Appoptics::Metrics::Middleware::ExpectsStatus
+          f.use AppOptics::Metrics::Middleware::RequestBody
+          f.use AppOptics::Metrics::Middleware::Retry
+          f.use AppOptics::Metrics::Middleware::CountRequests
+          f.use AppOptics::Metrics::Middleware::ExpectsStatus
 
           f.adapter @adapter || Metrics.faraday_adapter
           f.proxy @proxy if @proxy

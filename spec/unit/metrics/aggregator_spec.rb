@@ -1,5 +1,5 @@
 require "spec_helper.rb"
-module Appoptics
+module AppOptics
   module Metrics
 
     describe Aggregator do
@@ -19,9 +19,9 @@ module Appoptics
         end
 
         context "without specified client" do
-          it "uses Appoptics::Metrics client" do
+          it "uses AppOptics::Metrics client" do
             a = Aggregator.new
-            expect(a.client).to eq(Appoptics::Metrics.client)
+            expect(a.client).to eq(AppOptics::Metrics.client)
           end
         end
 
@@ -342,8 +342,8 @@ module Appoptics
 
       describe "#submit" do
         before(:all) do
-          Appoptics::Metrics.authenticate 'me@AppOptics.com', 'foo'
-          Appoptics::Metrics.persistence = :test
+          AppOptics::Metrics.authenticate 'me@AppOptics.com', 'foo'
+          AppOptics::Metrics.persistence = :test
         end
 
         context "when successful" do

@@ -1,6 +1,6 @@
 # Use for testing the interface with persistence methods
 
-module Appoptics
+module AppOptics
   module Metrics
     module Persistence
       class Test
