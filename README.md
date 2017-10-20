@@ -37,7 +37,7 @@ While this is all you need to get started, if you are sending a number of metric
 
 ## Authentication
 
-Make sure you have [an account for AppOptics](https://www.appoptics.com/) and then authenticate with your email and API key (on your account page):
+Make sure you have [an account for AppOptics](https://www.appoptics.com/) and then authenticate with your API key (on your account page):
 
     AppOptics::Metrics.authenticate 'api_key'
 
