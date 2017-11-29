@@ -330,7 +330,7 @@ module AppOptics
 
       describe "#last_submit_time" do
         before(:all) do
-          AppOptics::Metrics.authenticate 'me@Appoptics.com', 'foo'
+          AppOptics::Metrics.authenticate 'foo'
           AppOptics::Metrics.persistence = :test
         end
 
@@ -537,7 +537,7 @@ module AppOptics
 
       describe "#submit" do
         before(:all) do
-          AppOptics::Metrics.authenticate 'me@Appoptics.com', 'foo'
+          AppOptics::Metrics.authenticate 'foo'
           AppOptics::Metrics.persistence = :test
         end
 

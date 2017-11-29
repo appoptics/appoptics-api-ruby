@@ -7,7 +7,7 @@ require 'rspec'
 require 'rspec/mocks/standalone'
 require 'set'
 
-require 'appoptics-api-ruby'
+require 'appoptics/metrics'
 
 RSpec.configure do |config|
 

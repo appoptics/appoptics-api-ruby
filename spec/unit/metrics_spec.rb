@@ -41,7 +41,7 @@ module AppOptics
    describe "#submit" do
      before(:all) do
        AppOptics::Metrics.persistence = :test
-       AppOptics::Metrics.authenticate 'me@AppOptics.com', 'foo'
+       AppOptics::Metrics.authenticate 'foo'
      end
      after(:all) { AppOptics::Metrics.client.flush_authentication }
 
