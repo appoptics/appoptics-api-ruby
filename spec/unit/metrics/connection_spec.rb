@@ -59,7 +59,7 @@ module AppOptics
         let(:client) do
           client = Client.new
           client.api_endpoint = 'http://127.0.0.1:9296'
-          client.authenticate 'foo', 'bar'
+          client.authenticate 'bar'
           client
         end
 

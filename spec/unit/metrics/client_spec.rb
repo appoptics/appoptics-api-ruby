@@ -52,10 +52,9 @@ module AppOptics
       end
 
       describe "#authenticate" do
-        context "when given two arguments" do
+        context "when given one argument" do
           it "stores them as email and api_key" do
-            subject.authenticate 'test@Appoptics.com', 'api_key'
-            expect(subject.email).to eq('test@Appoptics.com')
+            subject.authenticate 'api_key'
             expect(subject.api_key).to eq('api_key')
           end
         end
@@ -106,14 +105,14 @@ module AppOptics
 
       describe "#submit" do
         it "persists metrics immediately" do
-          subject.authenticate 'me@Appoptics.com', 'foo'
+          subject.authenticate 'foo'
           subject.persistence = :test
           expect(subject.submit(foo: 123)).to be true
           expect(subject.persister.persisted).to eq({gauges: [{name: 'foo', value: 123}]})
         end
 
         it "tolerates muliple metrics" do
-          subject.authenticate 'me@Appoptics.com', 'foo'
+          subject.authenticate 'foo'
           subject.persistence = :test
           expect { subject.submit foo: 123, bar: 456 }.not_to raise_error
           expected = {gauges: [{name: 'foo', value: 123}, {name: 'bar', value: 456}]}
