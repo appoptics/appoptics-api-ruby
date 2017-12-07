@@ -1,8 +1,8 @@
 require 'faraday'
-require 'metrics/middleware/count_requests'
-require 'metrics/middleware/expects_status'
-require 'metrics/middleware/request_body'
-require 'metrics/middleware/retry'
+require 'appoptics/metrics/middleware/count_requests'
+require 'appoptics/metrics/middleware/expects_status'
+require 'appoptics/metrics/middleware/request_body'
+require 'appoptics/metrics/middleware/retry'
 
 module AppOptics
   module Metrics

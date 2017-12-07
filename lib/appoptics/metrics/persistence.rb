@@ -1,2 +1,2 @@
-require 'metrics/persistence/direct'
-require 'metrics/persistence/test'
+require 'appoptics/metrics/persistence/direct'
+require 'appoptics/metrics/persistence/test'

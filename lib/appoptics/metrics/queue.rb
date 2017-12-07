@@ -1,4 +1,4 @@
-require 'metrics/processor'
+require 'appoptics/metrics/processor'
 
 module AppOptics
   module Metrics
