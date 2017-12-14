@@ -35,7 +35,6 @@ module AppOptics
         context "with valid arguments" do
           it "initializes Queue" do
             expect { Queue.new }.not_to raise_error
-            expect { Queue.new(source: "metrics-web-stg-1") }.not_to raise_error
             expect { Queue.new(tags: { hostname: "metrics-web-stg-1" }) }.not_to raise_error
           end
         end
@@ -44,7 +43,6 @@ module AppOptics
           it "raises exception" do
             expect {
               Queue.new(
-                source: "metrics-web-stg-1",
                 tags: { hostname: "metrics-web-stg-1" }
               )
             }.to raise_error(InvalidParameters)
@@ -104,7 +102,7 @@ module AppOptics
         context "with invalid arguments" do
           it "raises exception" do
             expect {
-              subject.add test: { source: "metrics-web-stg-1", tags: { hostname: "metrics-web-stg-1" }, value: 123 }
+              subject.add test: { tags: { hostname: "metrics-web-stg-1" }, value: 123 }
             }.to raise_error(InvalidParameters)
           end
         end
@@ -129,12 +127,6 @@ module AppOptics
             expected = {gauges: [{name: 'temperature', value: 34, measure_time: @time}]}
             expect(subject.queued).to equal_unordered(expected)
           end
-
-          it "accepts type key as string or a symbol" do
-            subject.add total_visits: {type: "counter", value: 4000}
-            expected = {counters: [{name: 'total_visits', value: 4000, measure_time: @time}]}
-            expect(subject.queued).to equal_unordered(expected)
-          end
         end
 
         context "with extra attributes" do
@@ -142,7 +134,7 @@ module AppOptics
             measure_time = Time.now
             subject.add disk_use: {value: 35.4, period: 2,
               description: 'current disk utilization', measure_time: measure_time,
-              source: 'db2'}
+              tags: { source: 'db2'}}
             expected = {gauges: [{value: 35.4, name: 'disk_use', period: 2,
               description: 'current disk utilization', measure_time: measure_time.to_i,
               source: 'db2'}]}

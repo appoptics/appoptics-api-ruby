@@ -38,12 +38,11 @@ RSpec.configure do |config|
 
   # set up test account credentials for integration tests
   def prep_integration_tests
-    raise 'no TEST_API_USER specified in environment' unless ENV['TEST_API_USER']
     raise 'no TEST_API_KEY specified in environment' unless ENV['TEST_API_KEY']
     if ENV['TEST_API_ENDPOINT']
       AppOptics::Metrics.api_endpoint = ENV['TEST_API_ENDPOINT']
     end
-    AppOptics::Metrics.authenticate ENV['TEST_API_USER'], ENV['TEST_API_KEY']
+    AppOptics::Metrics.authenticate ENV['TEST_API_KEY']
   end
 
   def rackup_path(*parts)
