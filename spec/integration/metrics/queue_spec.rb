@@ -25,25 +25,22 @@ module AppOptics
           (1..5).each do |i|
             queue.add "gauge_#{i}" => i
           end
-          (1..3).each do |i|
-            queue.add "counter_#{i}" => {type: :counter, value: i}
-          end
           queue.submit
 
           metrics = Metrics.metrics
           expect(metrics.length).to eq(8)
-          counter = Metrics.get_measurements :counter_3, count: 1
-          expect(counter['unassigned'][0]['value']).to eq(3)
-          gauge = Metrics.get_measurements :gauge_5, count: 1
+          gauge = Metrics.get_series :gauge_5
           expect(gauge['unassigned'][0]['value']).to eq(5)
         end
 
         it "applies globals to each request" do
-          source = 'yogi'
           measure_time = Time.now.to_i-3
           queue = Queue.new(
             per_request: 3,
-            source: source,
+            tags: {
+              host: 'localhost',
+              environment: 'test'
+            },
             measure_time: measure_time,
             skip_measurement_times: true
           )
@@ -53,23 +50,13 @@ module AppOptics
           queue.submit
 
           # verify globals have persisted for all requests
-          gauge = Metrics.get_measurements :gauge_5, count: 1
-          expect(gauge[source][0]["value"]).to eq(1.0)
-          expect(gauge[source][0]["measure_time"]).to eq(measure_time)
+          query = {
+            duration: 300,
+            resolution: 1
+          }
+          gauge = Metrics.get_series :gauge_5, query
+          expect(gauge[0]["measurements"][0]["value"]).to eq(1.0)
         end
-      end
-
-      it "respects default and individual sources" do
-        queue = Queue.new(source: 'default')
-        queue.add foo: 123
-        queue.add bar: {value: 456, source: 'barsource'}
-        queue.submit
-
-        foo = Metrics.get_measurements :foo, count: 2
-        expect(foo['default'][0]['value']).to eq(123)
-
-        bar = Metrics.get_measurements :bar, count: 2
-        expect(bar['barsource'][0]['value']).to eq(456)
       end
 
       context "with tags" do
