@@ -106,48 +106,20 @@ module AppOptics
     describe "#get_metric" do
       before(:all) do
         delete_all_metrics
-        Metrics.submit my_counter: {type: :counter, value: 0, measure_time: Time.now.to_i-60}
+        Metrics.submit my_gauge: {value: 0, measure_time: Time.now.to_i-60}
         1.upto(2).each do |i|
           measure_time = Time.now.to_i - (5+i)
-          opts = {measure_time: measure_time, type: :counter}
-          Metrics.submit my_counter: opts.merge(value: i)
-          Metrics.submit my_counter: opts.merge(source: 'baz', value: i+1)
+          opts = {measure_time: measure_time}
+          Metrics.submit my_gauge: opts.merge(value: i)
+          Metrics.submit my_gauge: opts.merge(tags: { hostname: "baz"}, value: i+1)
         end
       end
 
       context "without arguments" do
         it "gets metric attributes" do
-          metric = Metrics.get_metric :my_counter
-          expect(metric['name']).to eq('my_counter')
-          expect(metric['type']).to eq('counter')
-        end
-      end
-
-      context "with a start_time" do
-        it "returns entries since that time" do
-          # 1 hr ago
-          metric = Metrics.get_metric :my_counter, start_time: Time.now-3600
-          data = metric['measurements']
-          expect(data['unassigned'].length).to eq(3)
-          expect(data['baz'].length).to eq(2)
-        end
-      end
-
-      context "with a count limit" do
-        it "returns that number of entries per source" do
-          metric = Metrics.get_metric :my_counter, count: 2
-          data = metric['measurements']
-          expect(data['unassigned'].length).to eq(2)
-          expect(data['baz'].length).to eq(2)
-        end
-      end
-
-      context "with a source limit" do
-        it "only returns that source" do
-          metric = Metrics.get_metric :my_counter, source: 'baz', start_time: Time.now-3600
-          data = metric['measurements']
-          expect(data['baz'].length).to eq(2)
-          expect(data['unassigned']).to be_nil
+          metric = Metrics.get_metric :my_gauge
+          expect(metric['name']).to eq('my_gauge')
+          expect(metric['type']).to eq('gauge')
         end
       end
 
@@ -190,40 +162,9 @@ module AppOptics
         end
 
         it "stores their data" do
-          data = Metrics.get_measurements :foo, count: 1
-          expect(data).not_to be_empty
-          data['unassigned'][0]['value'] == 123.0
+          data = Metrics.metrics(name: 'foo')
+          expect(data.count).to eq(1)
         end
-      end
-
-      context "with a counter" do
-        before(:all) do
-          delete_all_metrics
-          Metrics.submit bar: {type: :counter, source: 'baz', value: 456}
-        end
-
-        it "creates the metrics" do
-          metric = Metrics.metrics[0]
-          expect(metric['name']).to eq('bar')
-          expect(metric['type']).to eq('counter')
-        end
-
-        it "stores their data" do
-          data = Metrics.get_measurements :bar, count: 1
-          expect(data).not_to be_empty
-          data['baz'][0]['value'] == 456.0
-        end
-      end
-
-      it "does not retain errors" do
-        delete_all_metrics
-        Metrics.submit foo: {type: :counter, value: 12}
-        expect {
-          Metrics.submit foo: 15 # submitting as gauge
-        }.to raise_error(AppOptics::Metrics::ClientError)
-        expect {
-          Metrics.submit foo: {type: :counter, value: 17}
-        }.not_to raise_error
       end
 
     end
@@ -264,17 +205,6 @@ module AppOptics
             expect(foo['period']).to eq(15)
             expect(foo['attributes']['display_max']).to eq(1000)
           end
-
-          it "raises error if no type specified" do
-            delete_all_metrics
-            expect {
-              Metrics.update_metric :foo, display_name: "Foo Metric",
-                                          period: 15,
-                                          attributes: {
-                                            display_max: 1000
-                                          }
-            }.to raise_error(AppOptics::Metrics::ClientError)
-          end
         end
 
       end
@@ -310,66 +240,25 @@ module AppOptics
       end
     end
 
-    describe "Sources API" do
-      before do
-        Metrics.update_source("sources_api_test", display_name: "Sources Api Test")
-      end
-
-      describe "#sources" do
-        it "works" do
-          sources = Metrics.sources
-          expect(sources).to be_an(Array)
-          test_source = sources.detect { |s| s["name"] == "sources_api_test" }
-          expect(test_source["display_name"]).to eq("Sources Api Test")
-        end
-
-        it "allows filtering by name" do
-          sources = Metrics.sources name: 'sources_api_test'
-          expect(sources.all? {|s| s['name'] =~ /sources_api_test/}).to be_truthy
-        end
-      end
-
-      describe "#get_source" do
-        it "works" do
-          test_source = Metrics.get_source("sources_api_test")
-          expect(test_source["display_name"]).to eq("Sources Api Test")
-        end
-      end
-
-      describe "#update_source" do
-        it "updates an existing source" do
-          Metrics.update_source("sources_api_test", display_name: "Updated Source Name")
-
-          test_source = Metrics.get_source("sources_api_test")
-          expect(test_source["display_name"]).to eq("Updated Source Name")
-        end
-
-        it "creates new sources" do
-          source_name = "sources_api_test_#{Time.now.to_f}"
-          expect {
-            no_source = Metrics.get_source(source_name)
-          }.to raise_error(AppOptics::Metrics::NotFound)
-
-          Metrics.update_source(source_name, display_name: "New Source")
-
-          test_source = Metrics.get_source(source_name)
-          expect(test_source).not_to be_nil
-          expect(test_source["display_name"]).to eq("New Source")
-        end
-      end
-
-    end
-
     describe "#get_series" do
       before { Metrics.submit test_series: { value: 123, tags: { hostname: "metrics-web-stg-1" } } }
 
-      it "gets series" do
-        series = Metrics.get_series :test_series, resolution: 1, duration: 3600
+      context "with a set tag value" do
+        it "gets series" do
+          series = Metrics.get_series :test_series, resolution: 1, duration: 3600
 
-        expect(series[0]["tags"]["hostname"]).to eq("metrics-web-stg-1")
-        expect(series[0]["measurements"][0]["value"]).to eq(123)
+          expect(series[0]["tags"]["hostname"]).to eq("metrics-web-stg-1")
+          expect(series[0]["measurements"][0]["value"]).to eq(123)
+        end
+      end
+
+      context "with a start_time" do
+        it "returns entries since that time" do
+          # 1 hr ago
+          series = Metrics.get_series :test_series, start_time: Time.now-60
+          expect(series[0]['measurements'].length).to eq(1)
+        end
       end
     end
-
   end
 end
