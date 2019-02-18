@@ -44,7 +44,19 @@ module AppOptics
         end.tap do |transport|
           transport.headers[:user_agent] = user_agent
           transport.headers[:content_type] = 'application/json'
+          merge_custom_headers(transport)
           transport.basic_auth @client.api_key, nil
+        end
+      end
+      
+      def custom_headers
+        @client.custom_headers
+      end
+      
+      def merge_custom_headers(transport)
+        return if custom_headers.nil?
+        custom_headers.each do |key, val|
+          transport.headers[key] = val
         end
       end
 

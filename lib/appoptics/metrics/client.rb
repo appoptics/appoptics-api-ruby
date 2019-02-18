@@ -7,6 +7,7 @@ module AppOptics
       def_delegator :annotator, :add, :annotate
 
       attr_accessor :api_key, :proxy
+      attr_reader :custom_headers
 
       # @example Have the gem build your identifier string
       #   AppOptics::Metrics.agent_identifier 'flintstone', '0.5', 'fred'
@@ -45,6 +46,10 @@ module AppOptics
       #
       def api_endpoint=(endpoint)
         @api_endpoint = endpoint
+      end
+      
+      def set_custom_headers(headers)
+        @custom_headers = headers
       end
 
       # Authenticate for direct persistence

@@ -78,7 +78,7 @@ module AppOptics
                     :get_snapshot, :get_source, :metrics,
                     :persistence, :persistence=, :persister, :proxy, :proxy=,
                     :sources, :submit, :update_metric, :update_metrics,
-                    :update_source
+                    :update_source, :set_custom_headers
 
     # The AppOptics::Metrics::Client being used by module-level
     # access.
