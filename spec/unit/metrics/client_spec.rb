@@ -120,6 +120,14 @@ module AppOptics
         end
       end
 
+      describe "#set_custom_headers" do
+        it "adds custom headers" do
+          headers = {"Foo-Header" => "bar"}
+          subject.set_custom_headers(headers)
+          expect(subject.custom_headers).to eq(headers)
+        end
+      end
+
     end
 
   end

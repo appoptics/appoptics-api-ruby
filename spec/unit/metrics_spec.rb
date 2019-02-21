@@ -58,6 +58,14 @@ module AppOptics
      end
    end
 
+   describe "#custom_headers" do
+     it "saves custom headers" do
+       headers = {'Some-Custom-Header' => 'abcdef1234' }
+       expect { AppOptics::Metrics.set_custom_headers(headers) }.not_to raise_error
+       expect(AppOptics::Metrics.client.custom_headers).to eq(headers)
+     end
+   end
+
   end
 
 end
