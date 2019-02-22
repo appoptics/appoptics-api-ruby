@@ -63,6 +63,14 @@ module AppOptics
           client
         end
 
+        context "with custom headers" do
+          it "merges custom headers into transport" do
+            headers = {"Foo-Header" => "bar"}
+            client.custom_headers = headers
+            expect(client.connection.transport.headers["Foo-Header"]).to eq("bar")
+          end
+        end
+
         context "with 400 class errors" do
           it "does not retry" do
             Middleware::CountRequests.reset

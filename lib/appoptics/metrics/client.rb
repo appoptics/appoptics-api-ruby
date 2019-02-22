@@ -48,7 +48,7 @@ module AppOptics
         @api_endpoint = endpoint
       end
       
-      def set_custom_headers(headers)
+      def custom_headers=(headers)
         @custom_headers = headers
       end
 
