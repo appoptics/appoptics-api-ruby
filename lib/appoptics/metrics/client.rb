@@ -7,6 +7,7 @@ module AppOptics
       def_delegator :annotator, :add, :annotate
 
       attr_accessor :api_key, :proxy
+      attr_accessor :custom_headers
 
       # @example Have the gem build your identifier string
       #   AppOptics::Metrics.agent_identifier 'flintstone', '0.5', 'fred'
