@@ -32,7 +32,7 @@ module AppOptics
         raise(NoClientProvided, "No client provided.") unless @client
         @transport ||= Faraday::Connection.new(
           url: api_endpoint + "/v1/",
-          request: {open_timeout: 20, timeout: 30}) do |f|
+          request: {open_timeout: 20, timeout: 30, params_encoder: AppOptics::Metrics::ParamsEncoder}) do |f|
 
           f.use AppOptics::Metrics::Middleware::RequestBody
           f.use AppOptics::Metrics::Middleware::Retry
