@@ -6,8 +6,8 @@ module AppOptics
 
       def_delegator :annotator, :add, :annotate
 
-      attr_accessor :api_key, :proxy
-      attr_accessor :custom_headers
+      attr_accessor :api_key, :proxy, :custom_headers, :client_timeout,
+        :open_timeout, :retry_count
 
       # @example Have the gem build your identifier string
       #   AppOptics::Metrics.agent_identifier 'flintstone', '0.5', 'fred'
@@ -63,7 +63,10 @@ module AppOptics
         # prevent successful creation if no credentials set
         raise CredentialsMissing unless (self.api_key)
         @connection ||= Connection.new(client: self, api_endpoint: api_endpoint,
-                                       adapter: faraday_adapter, proxy: self.proxy)
+                                       adapter: faraday_adapter, proxy: self.proxy,
+                                       client_timeout: client_timeout,
+                                       open_timeout: open_timeout,
+                                       retry_count: retry_count)
       end
 
       # Overrride user agent for this client's connections. If you

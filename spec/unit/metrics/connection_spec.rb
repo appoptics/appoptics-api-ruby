@@ -113,6 +113,23 @@ module AppOptics
             expect(Middleware::CountRequests.total_requests).to eq(4) # did retries
             expect(status).to eq(502) # body is sent for retries
           end
+
+          it "doesn't retry with num retries set to 0" do
+            Middleware::CountRequests.reset
+            status = 0
+            begin
+              with_rackup('status.ru') do
+                client.retry_count = 0
+                response = client.connection.transport.post do |req|
+                  req.url 'retry_body'
+                  req.body = '{"foo": "bar", "baz": "kaboom"}'
+                end
+              end
+            rescue Exception => error
+              status = error.response[:status].to_i
+            end
+            expect(status).to eq(502) # body is sent for retries
+          end
         end
       end
     end
