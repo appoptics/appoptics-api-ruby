@@ -20,6 +20,9 @@ module AppOptics
         @api_endpoint = options[:api_endpoint]
         @adapter = options[:adapter]
         @proxy = options[:proxy]
+        @open_timeout = options[:open_timeout]
+        @client_timeout = options[:client_timeout]
+        @retry_count = options[:retry_count]
       end
 
       # API endpoint that will be used for requests.
@@ -32,10 +35,10 @@ module AppOptics
         raise(NoClientProvided, "No client provided.") unless @client
         @transport ||= Faraday::Connection.new(
           url: api_endpoint + "/v1/",
-          request: {open_timeout: 20, timeout: 30}) do |f|
+          request: {open_timeout: open_timeout, timeout: client_timeout}) do |f|
 
           f.use AppOptics::Metrics::Middleware::RequestBody
-          f.use AppOptics::Metrics::Middleware::Retry
+          f.use AppOptics::Metrics::Middleware::Retry, retry_count
           f.use AppOptics::Metrics::Middleware::CountRequests
           f.use AppOptics::Metrics::Middleware::ExpectsStatus
 
@@ -48,11 +51,11 @@ module AppOptics
           transport.basic_auth @client.api_key, nil
         end
       end
-      
+
       def custom_headers
         @client.custom_headers
       end
-      
+
       def merge_custom_headers(transport)
         return if custom_headers.nil?
         custom_headers.each do |key, val|
@@ -105,6 +108,18 @@ module AppOptics
             return handler.name[18..-1]
           end
         end
+      end
+
+      def open_timeout
+        @open_timeout || 20
+      end
+
+      def client_timeout
+        @client_timeout || 30
+      end
+
+      def retry_count
+        @retry_count || 3
       end
 
     end

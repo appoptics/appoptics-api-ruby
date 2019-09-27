@@ -43,7 +43,7 @@ module AppOptics
           it "raises exception" do
             expect {
               Queue.new(
-                tags: { hostname: "metrics-web-stg-1" }
+                tags: { hostname: "metrics-web-stg-1" }, source: anything
               )
             }.to raise_error(InvalidParameters)
           end
@@ -102,7 +102,11 @@ module AppOptics
         context "with invalid arguments" do
           it "raises exception" do
             expect {
-              subject.add test: { tags: { hostname: "metrics-web-stg-1" }, value: 123 }
+              subject.add test: {
+                value: 123,
+                source: anything,
+                tags: { hostname: "metrics-web-stg-1" },
+              }
             }.to raise_error(InvalidParameters)
           end
         end
@@ -135,10 +139,10 @@ module AppOptics
             subject.add disk_use: {value: 35.4, period: 2,
               description: 'current disk utilization', measure_time: measure_time,
               tags: { source: 'db2'}}
-            expected = {gauges: [{value: 35.4, name: 'disk_use', period: 2,
-              description: 'current disk utilization', measure_time: measure_time.to_i,
-              source: 'db2'}]}
-            expect(subject.queued).to equal_unordered(expected)
+            expected = {measurements: [{value: 35.4, name: 'disk_use', period: 2,
+              description: 'current disk utilization', time: measure_time.to_i,
+              tags: { source: 'db2'}}]}
+            expect(subject.queued).to eq(expected)
           end
 
           context "with a prefix set" do
