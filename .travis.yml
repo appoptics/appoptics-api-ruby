@@ -2,7 +2,7 @@
 sudo: false
 
 jdk:
-  - oraclejdk9
+  - oraclejdk8
 rvm:
   - 1.9.3
   - 2.1.10
@@ -16,17 +16,6 @@ rvm:
 matrix:
   allow_failures:
     - rvm: ruby-head
-  exclude:
-    - rvm: 1.9.3
-      jdk: oraclejdk9
-    - rvm: 2.1.10
-      jdk: oraclejdk9
-    - rvm: 2.2.6
-      jdk: oraclejdk9
-    - rvm: 2.3.3
-      jdk: oraclejdk9
-    - rvm: 2.4.0
-      jdk: oraclejdk9
 
 branches:
   except:
