@@ -1,19 +1,32 @@
 # use container-based infrastructure
 sudo: false
 
+jdk:
+  - oraclejdk9
 rvm:
   - 1.9.3
   - 2.1.10
   - 2.2.6
   - 2.3.3
   - 2.4.0
-  # - jruby-19mode
+  - jruby-19mode
   # - rbx
   - ruby-head
 
 matrix:
   allow_failures:
     - rvm: ruby-head
+  exclude:
+    - rvm: 1.9.3
+      jdk: oraclejdk9
+    - rvm: 2.1.10
+      jdk: oraclejdk9
+    - rvm: 2.2.6
+      jdk: oraclejdk9
+    - rvm: 2.3.3
+      jdk: oraclejdk9
+    - rvm: 2.4.0
+      jdk: oraclejdk9
 
 branches:
   except:
